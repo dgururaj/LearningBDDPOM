@@ -1,0 +1,52 @@
+node('EVO2') {
+
+	docker.image("10.0.3.75:5000/dockerchrome").inside("--privileged -v /var/run/docker.sock:/var/run/docker.sock -v /dev/shm:/dev/shm") {
+
+        try {
+            stage('Checkout latest from GIT') {
+                git url: "http://git.someurl.com:3000/TestAutomation.git", credentialsId:"git"
+            }
+
+            stage('Clean test workspace') {
+                sh 'mvn clean'
+            }
+
+            stage('Build project test code') {
+                sh 'mvn install -DskipTests'
+            }
+
+            stage('Execute tests') {
+                sh 'xvfb-run --server-args="-screen 0, 1920x1080x24" mvn clean test -Dfeatures="src/test/resources/features" -PclientT2 -DdriverType=chrome -Dwebdriver.chrome.driver="$CHROMEDRIVER_DIR/chromedriver" -DdriverWaitTime=200 -Dsurefire.fork.count=3'
+            }
+
+            stage('Test artifacts') {
+                step([$class: 'ArtifactArchiver', artifacts: '**/target/cucumber_reports/regression_results/*.json', fingerprint: true])
+                step([$class: 'ArtifactArchiver', artifacts: '**/target/*.*', fingerprint: true])
+                step([$class: 'ArtifactArchiver', artifacts: '**/target/**/*', fingerprint: true])
+                step([$class: 'ArtifactArchiver', artifacts: '**/target/generated-test-sources/features/*.*', fingerprint: true])
+
+               echo 'Artifacts for test run are produced'
+			}
+
+			stage('Emailing test results') {
+                step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'tester1@dorganization.com tester2@dorganization.com tester3@dorganization.com', sendToIndividuals: false])
+            }
+
+        } catch (e){
+
+            stage('Test artifacts') {
+                step([$class: 'ArtifactArchiver', artifacts: '**/target/cucumber_reports/regression_results/*.json', fingerprint: true])
+                step([$class: 'ArtifactArchiver', artifacts: '**/target/*.*', fingerprint: true])
+                step([$class: 'ArtifactArchiver', artifacts: '**/target/**/*', fingerprint: true])
+                step([$class: 'ArtifactArchiver', artifacts: '**/target/generated-test-sources/features/*.*', fingerprint: true])
+
+               echo 'Artifacts for test run are produced'
+            }
+
+			stage('Emailing test results') {
+                step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'tester1@dorganization.com tester2@dorganization.com tester3@dorganization.com', sendToIndividuals: false])
+            }
+            throw e
+        }
+    }
+}

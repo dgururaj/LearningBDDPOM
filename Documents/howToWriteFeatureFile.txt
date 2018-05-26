@@ -1,0 +1,30 @@
+@sampletestingtag
+
+  Feature:i will write what application feature i am going to test
+
+    Scenario: Here i will write about test scenario, this scenario execution happens once only ('when' step only repeats 3 times)
+      Given What tester have as part of test environment
+      And optinally tester have this also
+      When Tester performing set of actions <Data>
+      |Data |
+      |  1  |
+      |  2  |
+      |  3  |
+      And optionally tester perform these actions also
+      Then Tester validates set of outcomes
+      And optionally Tester validate thses outcomes also
+
+
+    Scenario Outline: Here i will write about repetatively (entire scenario executes 3 times) validating scenario with different data/flow
+      Given What tester have as part of test environment
+      And optinally tester have this also
+      When Tester performing set of actions <Data>
+      Then Tester validates set of outcomes
+      And optionally Tester validate thses outcomes also
+
+    Examples:
+      |Data |
+      |1    |
+      |2    |
+      |3    |
+
