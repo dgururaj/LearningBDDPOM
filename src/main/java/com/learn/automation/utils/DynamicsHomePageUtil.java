@@ -16,8 +16,14 @@ public class DynamicsHomePageUtil extends AbstractPage {
 
 
     public void ClickSalesTile() throws Exception {
-        getDriver.navigate().refresh();
-        //Thread.sleep(15000);
+
+        String URLbyGET = getDriver.getCurrentUrl();
+        for (int i = 0; i < 4; i++) {
+            System.out.println("Browser Refresh:: " + URLbyGET + " " + i);
+            commonUtil.BrowserRefreshByCurrentURL(URLbyGET);
+            Thread.sleep(2000);
+        }
+        Thread.sleep(5000);
         boolean dtrue = dynamicsHomePage.SalesTile().isDisplayed();
         System.out.println("dtrue-" + dtrue);
         //commonUtil.ClickByAction(dynamicsHomePage.SalesTile());
@@ -26,14 +32,23 @@ public class DynamicsHomePageUtil extends AbstractPage {
         System.out.println("SalesTile is clicked");
     }
 
+    public void NavigateToSalesMOduleByURL() {
+        commonUtil.BrowserRefreshByCurrentURL("https://dgr.crm.dynamics.com/main.aspx?appid=8f216f5a-6d5b-e811-a979-000d3a37d203#220175621");
+
+    }
+
     public void ClickAccountsObject() throws Exception {
-        getDriver.navigate().refresh();
+        //getDriver.navigate().refresh();
+        commonUtil.WaitforCRMLoadingIcontoDisappear();
         waitForPageLoad();
+        commonUtil.HighLight(dynamicsHomePage.NavigationArrow2());
         commonUtil.clickbyJS(dynamicsHomePage.NavigationArrow2());
         commonUtil.WaitforCRMLoadingIcontoDisappear();
         waitForPageLoad();
+        ;
+        commonUtil.HighLight(dynamicsHomePage.AccountsObject());
         dynamicsHomePage.AccountsObject().click();
-
+        commonUtil.WaitforCRMLoadingIcontoDisappear();
         /*boolean btrue = dynamicsHomePage.NavigationArrow().isDisplayed();
 
         System.out.println("btrue-ClickAccountsObject" + btrue);
@@ -45,9 +60,7 @@ public class DynamicsHomePageUtil extends AbstractPage {
             //dynamicsHomePage.NavigationArrow().click();
             // waitForPageLoad();
             dynamicsHomePage.AccountsObject().click();*/
-        }
-
-
+    }
 
 
 }

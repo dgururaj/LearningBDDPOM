@@ -3,6 +3,7 @@ package com.learn.automation.step_definitions;
 import com.learn.automation.BaseStepDef;
 import com.learn.automation.utils.DataHelper;
 import com.learn.automation.utils.GetdatafromExcel;
+import com.learn.automation.utils.common.CommonUtil;
 import com.learn.automation.utils.sampleTestPageUtil;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
@@ -14,10 +15,13 @@ import cucumber.api.java.en.When;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.usmanhussain.habanero.framework.AbstractPage.getDriver;
+
 public class sampleStepDef extends BaseStepDef {
 
     private sampleTestPageUtil SampleTestPageUtil = new sampleTestPageUtil();
     private GetdatafromExcel readExcel = new GetdatafromExcel();
+    CommonUtil commonUtil = new CommonUtil();
     public List<HashMap<String,String>> datamap;
 
     Scenario scenario;
@@ -31,6 +35,12 @@ public class sampleStepDef extends BaseStepDef {
     @Given("^I have navigated to a website$")
     public void iHaveNavigatedToAWebsite() throws Throwable {
         getDriver().get("http://www.bing.com");
+        String URLbyGET = getDriver.getCurrentUrl();
+        for (int i = 0; i < 4; i++) {
+            System.out.println("Browser Refresh:: "+URLbyGET+ " "  + i);
+            commonUtil.BrowserRefreshByCurrentURL(URLbyGET);
+            Thread.sleep(2000);
+        }
     }
 
     @When("^I search for the following '(.+)'$")

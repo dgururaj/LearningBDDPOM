@@ -37,6 +37,8 @@ public class DataSetup {
             }
             String strTestDataFolder = pathOfProjectHomeDirectory + File.separator + "TestDataStore" + File.separator;
             SheetForAccountCreation = strTestDataFolder+ PropertyFile.getKeyValue("SheetForAccountCreation");
+            System.out.println("SheetForAccountCreation"+SheetForAccountCreation);
+            System.out.println("strTestDataFolder"+strTestDataFolder);
 
         }
     }

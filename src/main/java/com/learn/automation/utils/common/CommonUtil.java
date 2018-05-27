@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 
 public class CommonUtil extends AbstractPage {
 
+    public Actions actions = new Actions(getDriver);
+
     public static String regexOpertion(String regexData, String value) {
         Pattern p = Pattern.compile(regexData);
         Matcher m = p.matcher(value);
@@ -78,7 +80,7 @@ public class CommonUtil extends AbstractPage {
         return strValue;
     }
 
-    JavascriptExecutor Javascript;
+
 
     public void switchFrame(String frameName) throws Throwable {
         WebDriverWait wait = new WebDriverWait(getDriver, 20);
@@ -107,7 +109,6 @@ public class CommonUtil extends AbstractPage {
             new Select(property).selectByVisibleText(title);
         }
     }
-
 
 
     public void clickbyJS(WebElement strProperty) {
@@ -154,8 +155,15 @@ public class CommonUtil extends AbstractPage {
 
 
     public void ClickByAction(WebElement webElement) {
-        Actions actions = new Actions(getDriver);
+
         actions.moveToElement(webElement).click().build().perform();
+    }
+
+    public void BrowserRefresh() {
+        getDriver.navigate().refresh();
+    }
+    public void BrowserRefreshByCurrentURL(String urlCurrent) {
+        getDriver.navigate().to(urlCurrent);
     }
 
     public void WaitforCRMLoadingIcontoDisappear() {
@@ -175,5 +183,15 @@ public class CommonUtil extends AbstractPage {
 
     }
 
+    public void TypeByAction(WebElement webElement, String value) {
+        actions.moveToElement(webElement).click().sendKeys(value).build().perform();
 
+    }
+    public void HighLight(WebElement webe) throws Exception
+    {
+        JavascriptExecutor js = null;
+        js = ((JavascriptExecutor) getDriver);
+        js.executeScript("arguments[0].setAttribute('style', arguments[1]);", webe, "color: black; border: 2px solid red;");
+        //System.out.println("Inside Highlight");
+    }
 }

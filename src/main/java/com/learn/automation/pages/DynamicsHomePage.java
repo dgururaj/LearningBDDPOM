@@ -24,13 +24,16 @@ public class DynamicsHomePage extends AbstractPage {
     }
 
     public WebElement NavigationArrow2() {
-        return waitForExpectedElement(By.xpath("//a[@title='Go to Sales Area']/following::span"), 30);
+        return waitForElementVisible(By.xpath("//a[@title='Go to Sales Area']/following::span"));
+        //return waitForExpectedElement(By.xpath("//a[@title='Go to Sales Area']/following::span"), 30);
     }
 
     //
     public WebElement AccountsObject() {
         return findElement(By.xpath("//span[text()='Accounts']"));
     }
+
+
 
 
 }
