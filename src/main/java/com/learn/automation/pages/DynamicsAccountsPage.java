@@ -21,7 +21,8 @@ public class DynamicsAccountsPage extends AbstractPage {
     }
 
     public WebElement AccountName() {
-        return waitForElementVisible(By.xpath("//div[@id='name']"));
+       // return waitForElementVisible(By.xpath("//div[@id='name']"));
+        return  waitForExpectedElement(By.xpath("//div[@id='name']"),120);
     }
 
     // telephone1

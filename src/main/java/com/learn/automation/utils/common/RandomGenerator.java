@@ -2,6 +2,7 @@ package com.learn.automation.utils.common;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -149,5 +150,18 @@ public class RandomGenerator {
         Date d = new Date(System.currentTimeMillis());
         return prefix + " " + d.toString();
     }
+    public static String CurrentDateTimeStamp(String prefix){
+        System.out.println("Starting CurrentDateTimeStamp with prefix");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy HH:mm:ss");
+        Date date = new Date();
+        String timeStamp = prefix + dateFormat.format(date);
+        timeStamp = timeStamp.replace(" ", "");
+        timeStamp = timeStamp.replace("/", "");
+        timeStamp = timeStamp.replace(":", "");
+        System.out.println(timeStamp);
+        return timeStamp;
+    }
+
+
 
 }

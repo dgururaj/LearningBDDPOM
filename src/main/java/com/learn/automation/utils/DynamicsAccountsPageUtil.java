@@ -25,6 +25,15 @@ public class DynamicsAccountsPageUtil extends AbstractPage {
         commonUtil.TypeByAction(dynamicsAccountsPage.AccountName(), AccountName);
     }
 
+
+    public void ClickNewButton() throws Exception {
+        //commonUtil.WaitforCRMLoadingIcontoDisappear();
+        commonUtil.WaitforCRMLoadingIcontoDisappear();
+        commonUtil.HighLight(dynamicsAccountsPage.NewButton());
+        dynamicsAccountsPage.NewButton().click();
+
+    }
+
     public void EnterPhone(String Phone) throws Exception {
         commonUtil.HighLight(dynamicsAccountsPage.Phone());
         commonUtil.TypeByAction(dynamicsAccountsPage.Phone(), Phone);
@@ -58,8 +67,10 @@ public class DynamicsAccountsPageUtil extends AbstractPage {
         for (String string : all) {
             System.out.println(all);
         }
+        switchToDefault();
 
     }
+
 
 
 

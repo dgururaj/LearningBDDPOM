@@ -32,6 +32,10 @@ public class DynamicsHomePage extends AbstractPage {
     public WebElement AccountsObject() {
         return findElement(By.xpath("//span[text()='Accounts']"));
     }
+    public WebElement LeadsObject() {
+        return waitForExpectedElement(By.xpath("//span[text()='Leads']"),90);
+        //return findElement(By.xpath("//span[text()='Leads']"));
+    }
 
 
 

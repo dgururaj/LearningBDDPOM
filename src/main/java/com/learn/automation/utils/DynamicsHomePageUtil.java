@@ -62,5 +62,20 @@ public class DynamicsHomePageUtil extends AbstractPage {
             dynamicsHomePage.AccountsObject().click();*/
     }
 
+    public void ClickLeadsObject() throws Exception
+    {
+        //getDriver.navigate().refresh();
+       // commonUtil.WaitforCRMLoadingIcontoDisappear();
+        waitForPageLoad();
+        commonUtil.HighLight(dynamicsHomePage.NavigationArrow2());
+        commonUtil.clickbyJS(dynamicsHomePage.NavigationArrow2());
+        commonUtil.WaitforCRMLoadingIcontoDisappear();
+        waitForPageLoad();
+        commonUtil.HighLight(dynamicsHomePage.LeadsObject());
+        dynamicsHomePage.LeadsObject().click();
+        commonUtil.WaitforCRMLoadingIcontoDisappear();
+
+    }
+
 
 }

@@ -1,14 +1,13 @@
 package com.learn.automation.step_definitions;
 
 import com.learn.automation.BaseStepDef;
-import com.learn.automation.utils.DynamicsAccountsPageUtil;
-import com.learn.automation.utils.DynamicsHomePageUtil;
-import com.learn.automation.utils.DynamicsLoginPageUtil;
-import com.learn.automation.utils.GetdatafromExcel;
+import com.learn.automation.pages.DynamicsLeadsPage;
+import com.learn.automation.utils.*;
 import com.learn.automation.utils.JsonData.DataSetup;
 import com.learn.automation.utils.JsonData.ExcelToJSON;
 import com.learn.automation.utils.JsonData.JSON;
 import com.learn.automation.utils.JsonData.JSONToExcel;
+import com.learn.automation.utils.common.RandomGenerator;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -16,6 +15,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +33,8 @@ public class createAccountStepDef extends BaseStepDef {
     DynamicsLoginPageUtil dynamicsLoginPageUtil = new DynamicsLoginPageUtil();
     DynamicsHomePageUtil dynamicsHomePageUtil = new DynamicsHomePageUtil();
     DynamicsAccountsPageUtil dynamicsAccountsPageUtil = new DynamicsAccountsPageUtil();
+    DynamicsContactsPageUtil dynamicsContactsPageUtil = new DynamicsContactsPageUtil();
+    DynamicsLeadsPageUtil dynamicsLeadsPageUtil = new DynamicsLeadsPageUtil();
     public List<HashMap<String, String>> datamap;
     Scenario scenario;
     public String ScenarioName = "TC_01_Create Account";
@@ -138,9 +140,44 @@ public class createAccountStepDef extends BaseStepDef {
     @Given("User creates a Quick contact$")
     public void UserCreatesAQuickContact() throws Exception {
         System.out.println("S2 Given  - UserCreatesAQuickContact");
+        JSON.createJSONObj(DataSetup.SheetForAccountCreation);
         dynamicsAccountsPageUtil.ClickNewContactButton();
-
-
+        String fname = "Auto";
+        String lName = RandomGenerator.CurrentDateTimeStamp("Test");
+        String fcontactName = fname + " " + lName;
+        JSON.createJSONObj(DataSetup.SheetForAccountCreation);
+        JSON.writeDataToJSON("CreateAccount", fcontactName, "ContactName", "ScenarioName", ScenarioName);
+        dynamicsContactsPageUtil.CreateContact(fname, lName);
     }
+
+
+    @And("Creates a Lead with mandatory information$")
+    public void CreateLead() throws Exception {
+        Thread.sleep(9000);
+        dynamicsHomePageUtil.ClickLeadsObject();
+        dynamicsAccountsPageUtil.ClickNewButton();
+        JSON.createJSONObj(DataSetup.SheetForAccountCreation);
+        String topicName = RandomGenerator.CurrentDateTimeStamp("Auto Policy ");
+        JSON.writeDataToJSON("CreateAccount", topicName, "LeadTopicName", "ScenarioName", ScenarioName);
+        dynamicsLeadsPageUtil.EnterTopicName(topicName);
+        String AccountNameLINK = JSON.readDataFromJSON("CreateAccount", "FinalAccountName", "ScenarioName", ScenarioName);
+        String ContactNameLINK = JSON.readDataFromJSON("CreateAccount", "ContactName", "ScenarioName", ScenarioName);
+        String AccountNameL = JSON.readDataFromJSON("CreateAccount", "LeadFirstName", "ScenarioName", ScenarioName);
+        dynamicsLeadsPageUtil.EnterName(AccountNameL, RandomGenerator.CurrentDateTimeStamp("LCont"));
+        dynamicsLeadsPageUtil.LinkExistingContactName(ContactNameLINK, AccountNameLINK);
+        dynamicsLeadsPageUtil.SaveButton();
+    }
+
+    @When("Lead is associated to Existing Account and Contact$")
+    public void AssociateLead() throws Exception {
+
+        JSON.createJSONObj(DataSetup.SheetForAccountCreation);
+        String AccountNameLINK = JSON.readDataFromJSON("CreateAccount", "FinalAccountName", "ScenarioName", ScenarioName);
+        String ContactNameLINK = JSON.readDataFromJSON("CreateAccount", "ContactName", "ScenarioName", ScenarioName);
+       // String AccountNameL = JSON.readDataFromJSON("CreateAccount", "LeadFirstName", "ScenarioName", ScenarioName);
+        dynamicsLeadsPageUtil.LinkExistingContactName(ContactNameLINK, AccountNameLINK);
+        dynamicsLeadsPageUtil.SaveButton();
+    }
+
 
 }
